@@ -33,8 +33,8 @@ export class UsersService {
         await this.usersRepository.delete(id);
     }
 
-    async findByEmail(email: string) {
-        const user = await this.usersRepository.findOne({ email });
+    async findByUsername(username: string) {
+        const user = await this.usersRepository.findOne({ username });
         if (user) {
           return user;
         }
