@@ -6,9 +6,18 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MailModule } from './mail/mail.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [UsersModule, TasksModule, TypeOrmModule.forRoot(), AuthModule, MailModule],
+  imports: [
+    UsersModule, 
+    TasksModule, 
+    TypeOrmModule.forRoot(), 
+    AuthModule, 
+    MailModule,
+    ConfigModule.forRoot({isGlobal: true}),
+  ],
+
   controllers: [AppController],
   providers: [AppService],
 })

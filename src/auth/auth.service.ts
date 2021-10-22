@@ -5,20 +5,28 @@ import { UsersService } from 'src/users/users.service';
 import LoginRequest from './dto/LoginRequest.dto';
 import { JwtService } from '@nestjs/jwt';
 import LoginResponse from './dto/LoginResponse.dto';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
 
     constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService
+        private usersService: UsersService, //add this to define what Service we will use
+        private jwtService: JwtService,
+        private mailService: MailService,
         ) {}
 
     async register(registrationDataUser: User): Promise<User> {
         
-        const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
-        const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
-        return createdUser;
+        const token = Math.floor(1000 + Math.random() * 9000).toString();
+
+        // const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
+        // const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
+        
+        // send confirmation mail
+        await this.mailService.sendUserConfirmation(registrationDataUser, token);
+
+        return ;
     }
 
     async authenticateWithRequest(loginRequest: LoginRequest): Promise<User>{
