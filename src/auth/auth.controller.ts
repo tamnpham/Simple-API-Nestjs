@@ -24,7 +24,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
     @ApiBody({type: RegisterRequest}) //this decorator to make discription body in swagger
     //function(@Body as a user): return value
     register(@Body() user: User): Promise<User> {
-      return this.authService.register(user);
+      return this.authService.sendConfirmationEmail(user);
     }
 
 

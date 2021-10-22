@@ -16,12 +16,12 @@ export class AuthService {
         private mailService: MailService,
         ) {}
 
-    async register(registrationDataUser: User): Promise<User> {
+    async sendConfirmationEmail(registrationDataUser: User): Promise<User> {
         
         const token = Math.floor(1000 + Math.random() * 9000).toString();
 
-        // const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
-        // const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
+        const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
+        const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
         
         // send confirmation mail
         await this.mailService.sendUserConfirmation(registrationDataUser, token);
