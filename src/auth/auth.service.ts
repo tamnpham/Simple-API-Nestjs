@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
 import LoginRequest from './dto/LoginRequest.dto';
 import { JwtService } from '@nestjs/jwt';
+import LoginResponse from './dto/LoginResponse.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +17,7 @@ export class AuthService {
     async register(registrationDataUser: User): Promise<User> {
         
         const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
-  
         const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
-
         return createdUser;
     }
 
@@ -43,7 +42,6 @@ export class AuthService {
     async authenticateUsernameAndPassword(username: string, password: string): Promise<User>{
 
         const user = await this.usersService.findByUsername(username);
-
         const isPasswordMatching = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatching) {
@@ -51,14 +49,13 @@ export class AuthService {
         }
 
         user.password = undefined;
-
         return user;
     }
 
-    async login(user: any) {
-        const payload = { username: user.username, sub: user.password };
-        return {
-          access_token: this.jwtService.sign(payload),
-        };
+    async login(loginRequest: any) {
+        const payload = { username: loginRequest.username, sub: loginRequest.password };
+        const loginResponse = new LoginResponse;
+        loginResponse.token = this.jwtService.sign(payload);
+        return loginResponse;
     }
 }
