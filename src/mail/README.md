@@ -4,5 +4,8 @@ In configurations of mail module, if we config hardcoded into our code file we w
 
 NOTE: if we use gmail to send email we must to enable 'Less secure app access' in gmail account setting to allow our application can access our account. Otherwise, the connection to login gmail server will be failed.
 
+![image](https://user-images.githubusercontent.com/90249100/138414542-2b7c9406-59ed-4b6f-80b5-2297f3892288.png)
+
+
 # References
 https://notiz.dev/blog/send-emails-with-nestjs
