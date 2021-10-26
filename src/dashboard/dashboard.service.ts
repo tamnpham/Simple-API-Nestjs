@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Token } from 'src/auth/token.entity';
 import { Repository } from 'typeorm';
 import { Dashboard } from './dashboard.entity';
 import SaveDashboardRequest from './dto/SaveDashboardRequest.dto';
@@ -9,9 +10,9 @@ export class DashboardService {
     constructor(
         @InjectRepository(Dashboard)
         private readonly dashboardRepository: Repository<Dashboard>,
+        
     ){}
     
-
     retrieveOne(id: string): Promise<Dashboard> {
         return this.dashboardRepository.findOne(id);
     }

@@ -5,14 +5,14 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 export class Config {
   @ApiProperty()
   @PrimaryGeneratedColumn()
-  additionalProp1: string;
+  additionalProp1: number;
 
   @ApiProperty()
   @Column()
-  additionalProp2: string;
+  additionalProp2: number;
 
   @ApiProperty()
   @Column()
-  additionalProp3: string;
+  additionalProp3: number;
 
 }

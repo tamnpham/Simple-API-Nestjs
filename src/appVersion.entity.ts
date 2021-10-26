@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity() 
+@Entity()
 export class AppVersion {
   @ApiPropertyOptional()
   @PrimaryGeneratedColumn()
@@ -14,5 +14,4 @@ export class AppVersion {
   @ApiPropertyOptional()
   @Column()
   version: string;
-
 }

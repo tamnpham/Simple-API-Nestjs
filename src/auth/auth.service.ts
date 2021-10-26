@@ -6,6 +6,11 @@ import LoginRequest from './dto/LoginRequest.dto';
 import { JwtService } from '@nestjs/jwt';
 import LoginResponse from './dto/LoginResponse.dto';
 import { MailService } from 'src/mail/mail.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Token } from './token.entity';
+import { Repository } from 'typeorm';
+import { Task } from 'src/tasks/tasks.entity';
+import LogoutRequest from './dto/LogoutRequest.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +19,10 @@ export class AuthService {
         private usersService: UsersService, //add this to define what Service we will use
         private jwtService: JwtService,
         private mailService: MailService,
-        ) {}
+        @InjectRepository(Token)
+        private readonly tokenRepository: Repository<Token>,
+
+        ){}
 
     async sendConfirmationEmail(registrationDataUser: User): Promise<User> {
         
@@ -64,8 +72,45 @@ export class AuthService {
         return loginResponse;
     }
 
-    async deactivateUser(logoutRequest: any) {
-        const Usertoken = this.jwtService.decode(logoutRequest.token);
-        console.log(Usertoken)
+    //function(parameter): return value
+    async saveToken(token: string, username: string) {
+        const tokenObject = new Token();
+        const user = this.usersService.findByUsername(username);
+        tokenObject.token = token;
+        tokenObject.userid = String((await user).id);
+        return this.tokenRepository.save(tokenObject);
     }
+
+    
+
+    async checkMatchUserIdToken(userid: string, token: string): Promise<boolean> {
+        const UserInfo = this.jwtService.decode(token);
+        const objectUserInfo = Object(UserInfo);
+        const user = this.usersService.findByUsername(objectUserInfo.username);
+        const userId = (await user).id
+        const userIdString = userId.toString()
+
+        if (userIdString == userid) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    async checkTokenDB(token: string, userid: string): Promise<boolean> {
+        const tokenDB = this.tokenRepository.findOne(userid);
+        if ((await tokenDB).token == token){
+            return true
+        } else {
+            return false   
+        }
+    }
+
+    async deactivateUser(logoutRequest: LogoutRequest): Promise<string> {
+        const user = this.usersService.findOne(logoutRequest.userid.toString());
+        this.saveToken(logoutRequest.token, (await user).username)
+        return 'logout sucessfully!'
+    }
+
+
 }

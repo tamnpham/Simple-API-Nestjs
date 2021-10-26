@@ -1,5 +1,5 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { AppVersion } from './appVersion.entity';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -16,9 +16,8 @@ export class AppController {
   //   return "your profile!";
   // }
 
-  
   @Get()
-  @ApiResponse({type: AppVersion})
+  @ApiResponse({ type: AppVersion })
   //function(@Body as a user): return value
   getVersion(): Promise<AppVersion[]> {
     return this.appService.getVersion();

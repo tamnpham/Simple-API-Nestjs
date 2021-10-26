@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
 import { Widget } from 'src/widget/widget.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
@@ -21,7 +21,6 @@ export class Dashboard {
   layoutType: string;
 
   @ApiPropertyOptional()
-  @OneToMany(type => Widget, widget => widget.title)
-  widgets: Widget;
+  widgets: Widget
 
 }

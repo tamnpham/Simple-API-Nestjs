@@ -1,5 +1,6 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
+import { Entity, Column, PrimaryGeneratedColumn, EntitySchema } from 'typeorm';
+import { Config } from './configs.entity';
 
 @Entity() 
 export class Widget {
@@ -18,4 +19,10 @@ export class Widget {
   @ApiPropertyOptional()
   @Column()
   minWidth: number;
+
+  @ApiPropertyOptional({
+    type: 'object',
+    additionalProperties: {$ref: getSchemaPath(Config)}
+  })
+  configs: Config
 }

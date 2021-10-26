@@ -52,6 +52,6 @@ import { ModuleTokenFactory } from '@nestjs/core/injector/module-token-factory';
     @ApiBody({type: LogoutRequest})
     //function(@Body as a user): return value
     logout(@Body() logoutRequest: LogoutRequest) {
-      return this.authService.deactivateUser(logoutRequest);
+      // return this.authService.deactivateUser(logoutRequest);
     }
   }

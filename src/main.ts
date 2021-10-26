@@ -6,7 +6,6 @@ import { ContactsModule } from './contacts/contacts.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ReportModule } from './report/report.module';
 import { TasksModule } from './tasks/tasks.module';
-import { UsersModule } from './users/users.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,24 +16,19 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
 
-  const document = SwaggerModule.createDocument(
-    app, 
-    config, 
-    {
-      include: 
-      [
-        AppModule, 
-        AuthModule, 
-        ContactsModule, 
-        TasksModule, 
-        DashboardModule, 
-        ReportModule,
-      ]
-    }
-  );
-  
+  const document = SwaggerModule.createDocument(app, config, {
+    include: [
+      AppModule,
+      AuthModule,
+      ContactsModule,
+      TasksModule,
+      DashboardModule,
+      ReportModule,
+    ],
+  });
+
   SwaggerModule.setup('api', app, document);
-  
+
   await app.listen(80);
 }
 bootstrap();

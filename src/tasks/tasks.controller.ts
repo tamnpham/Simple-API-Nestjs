@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import SaveTaskRequest from './dto/SaveTaskRequest.dto';
 import { Task } from './tasks.entity';
@@ -9,7 +10,10 @@ import { TasksService } from './tasks.service';
 @UseGuards(JwtAuthGuard)
 @Controller('tasks')
 export class TasksController {
-    constructor(private readonly tasksService: TasksService) {}
+    constructor(
+        private readonly tasksService: TasksService,
+        private authService: AuthService,
+        ) {}
 
     @Get() //method
     @ApiResponse({ status: 200, description: 'OK'})
@@ -36,7 +40,19 @@ export class TasksController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() taskInfoUpdate: Task): Promise<void> {
+    async update(
+        @Param('id') id: string, 
+        @Body() taskInfoUpdate: Task,
+        @Headers('Authorization') auth: string): Promise<void> {
+
+        // const checkPermission = this.authService.checkMatchUserIdToken
+        const token = auth.replace('Bearer ', '')
+        const checkPermission = await this.authService.checkMatchUserIdToken(id, token)
+        
+        if (checkPermission == false){
+            throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+        
+        }
         return this.tasksService.update(id, taskInfoUpdate);
     }
 }
