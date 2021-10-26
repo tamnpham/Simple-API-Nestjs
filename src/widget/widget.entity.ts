@@ -2,25 +2,20 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity() 
-export class User {
+export class Widget {
   @ApiPropertyOptional()
   @PrimaryGeneratedColumn()
-  id: number;
+  title: string;
 
   @ApiPropertyOptional()
   @Column()
-  username: string;
-
-  @ApiPropertyOptional()
-  @Column({unique: true})
-  email: string;
+  widgetType: string;
 
   @ApiPropertyOptional()
   @Column()
-  password: string;
+  minHeight: number;
 
   @ApiPropertyOptional()
   @Column()
-  fullname: string;
-
+  minWidth: number;
 }

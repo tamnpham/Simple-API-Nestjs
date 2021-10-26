@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class LoginRequest {
-    @ApiProperty() //Add this decorator to make properties visible
+    @ApiPropertyOptional() //Add this decorator to make properties visible
     username: string;
 
-    @ApiProperty()
+    @ApiPropertyOptional()
     password: string;
 }
    

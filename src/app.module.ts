@@ -7,15 +7,26 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { ContactsController } from './contacts/contacts.controller';
+import { ContactsModule } from './contacts/contacts.module';
+import { ReportModule } from './report/report.module';
+import { WidgetModule } from './widget/widget.module';
+import { AppVersion } from './appVersion.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([AppVersion]),
     UsersModule, 
     TasksModule, 
     TypeOrmModule.forRoot(), 
     AuthModule, 
     MailModule,
     ConfigModule.forRoot({isGlobal: true}),
+    DashboardModule,
+    ContactsModule,
+    ReportModule,
+    WidgetModule,
   ],
 
   controllers: [AppController],

@@ -66,4 +66,8 @@ export class AuthService {
         loginResponse.token = this.jwtService.sign(payload);
         return loginResponse;
     }
+
+    async deactivateUser(logoutRequest: any) {
+        
+    }
 }

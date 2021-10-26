@@ -1,11 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
-export class LoginResponse {
+export class LogoutRequest {
     @ApiPropertyOptional()
     token: string;
 
     @ApiPropertyOptional()
-    refreshToken: string;
+    userid: number;
 }
    
-export default LoginResponse;
+export default LogoutRequest;
