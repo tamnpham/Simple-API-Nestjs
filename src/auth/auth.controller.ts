@@ -1,8 +1,8 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Header, Headers, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/users/users.entity';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
+import { query, Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import LogoutRequest from './dto/LogoutRequest.dto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -11,6 +11,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { LoginRequest } from './dto/LoginRequest.dto';
 import LoginResponse from './dto/LoginResponse.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { ModuleTokenFactory } from '@nestjs/core/injector/module-token-factory';
 
 @ApiTags('auth-api') //this decorator to tag controller with specific tags in swagger
 @Controller('auth')
@@ -31,6 +32,11 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
       return this.authService.sendConfirmationEmail(user);
     }
 
+    @Get('confirm') //method 
+    //function(@Body as a user): return value
+    verify(@Query('token') token: string): Promise<string> {
+      return this.authService.verifyToken(token);
+    }
 
     @UseGuards(LocalAuthGuard)
     @Post('login') //method 
@@ -45,7 +51,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     @Post('logout') //method 
     @ApiBody({type: LogoutRequest})
     //function(@Body as a user): return value
-    logout(@Body() LoginRequest: LogoutRequest) {
-      return this.authService.login(LoginRequest);
+    logout(@Body() logoutRequest: LogoutRequest) {
+      return this.authService.deactivateUser(logoutRequest);
     }
   }

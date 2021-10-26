@@ -18,56 +18,54 @@ export class AuthService {
 
     async sendConfirmationEmail(registrationDataUser: User): Promise<User> {
         
-        const token = Math.floor(1000 + Math.random() * 9000).toString();
+        const payload = { 
+            username: registrationDataUser.username, 
+            password: registrationDataUser.password,
+            email: registrationDataUser.email,
+            fullname: registrationDataUser.fullname
+        };
+        const token = this.jwtService.sign(payload);
 
-        const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
-        const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
-        
+        // const hashedPassword = await bcrypt.hash(registrationDataUser.password, 10);
+        // const createdUser = await this.usersService.create({...registrationDataUser, password: hashedPassword});
+        console.log(token)
         // send confirmation mail
         await this.mailService.sendUserConfirmation(registrationDataUser, token);
 
         return ;
     }
 
-    async authenticateWithRequest(loginRequest: LoginRequest): Promise<User>{
-
-        const username = loginRequest.username;
-        const password = loginRequest.password;
-
-        const user = await this.usersService.findByUsername(username);
-
-        const isPasswordMatching = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordMatching) {
-            throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-        }
-
-        user.password = undefined;
-
-        return user;
+    async verifyToken(userToken: string): Promise<string> {
+        
+        const UserInfo = this.jwtService.decode(userToken);
+        const objectUserInfo = Object(UserInfo);
+        console.log(objectUserInfo)
+        const hashedPassword = await bcrypt.hash(objectUserInfo.password, 10);
+        const createdUser = await this.usersService.create({...objectUserInfo, password: hashedPassword});
+    
+        return 'Your account is already created!';
     }
 
     async authenticateUsernameAndPassword(username: string, password: string): Promise<User>{
 
         const user = await this.usersService.findByUsername(username);
         const isPasswordMatching = await bcrypt.compare(password, user.password);
-
         if (!isPasswordMatching) {
             throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
         }
-
         user.password = undefined;
         return user;
     }
 
     async login(loginRequest: any) {
-        const payload = { username: loginRequest.username, sub: loginRequest.password };
+        const payload = { username: loginRequest.username, password: loginRequest.password };
         const loginResponse = new LoginResponse;
         loginResponse.token = this.jwtService.sign(payload);
         return loginResponse;
     }
 
     async deactivateUser(logoutRequest: any) {
-        
+        const Usertoken = this.jwtService.decode(logoutRequest.token);
+        console.log(Usertoken)
     }
 }
