@@ -1,8 +1,8 @@
-import { ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Widget } from 'src/widget/widget.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity() 
+@Entity()
 export class Dashboard {
   @ApiPropertyOptional()
   @PrimaryGeneratedColumn()
@@ -13,7 +13,7 @@ export class Dashboard {
   userId: string;
 
   @ApiPropertyOptional()
-  @Column({unique: true})
+  @Column({ unique: true })
   title: string;
 
   @ApiPropertyOptional()
@@ -21,6 +21,5 @@ export class Dashboard {
   layoutType: string;
 
   @ApiPropertyOptional()
-  widgets: Widget
-
+  widgets: Widget;
 }

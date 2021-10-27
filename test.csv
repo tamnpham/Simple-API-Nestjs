@@ -1,0 +1,2 @@
+id,userId,title,layoutType,widgets
+4,1,Dashboard,circle,"{""id"":2,""widgetType"":""chart circle"",""minHeight"":150,""minWidth"":200,""configs"":{""id"":1,""additionalProp1"":124,""additionalProp2"":431,""additionalProp3"":353}}"

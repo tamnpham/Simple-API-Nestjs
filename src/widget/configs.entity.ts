@@ -1,10 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity() 
+@Entity()
 export class Config {
   @ApiProperty()
   @PrimaryGeneratedColumn()
+  id: number;
+
+  @ApiProperty()
+  @Column()
   additionalProp1: number;
 
   @ApiProperty()
@@ -14,5 +18,4 @@ export class Config {
   @ApiProperty()
   @Column()
   additionalProp3: number;
-
 }
