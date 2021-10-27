@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity() 
+@Entity()
 export class Contact {
   @ApiPropertyOptional()
   @PrimaryGeneratedColumn()
@@ -34,5 +34,4 @@ export class Contact {
   @ApiPropertyOptional()
   @Column()
   employeeId: number;
-
 }

@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity() 
+@Entity()
 export class User {
   @ApiPropertyOptional()
   @PrimaryGeneratedColumn()
@@ -12,7 +12,7 @@ export class User {
   username: string;
 
   @ApiPropertyOptional()
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
 
   @ApiPropertyOptional()
@@ -22,5 +22,4 @@ export class User {
   @ApiPropertyOptional()
   @Column()
   fullname: string;
-
 }

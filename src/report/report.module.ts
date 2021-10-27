@@ -12,9 +12,9 @@ import { ContactsService } from 'src/contacts/contacts.service';
   imports: [
     TasksModule,
     TypeOrmModule.forFeature([Task]),
-    TypeOrmModule.forFeature([Contact])
+    TypeOrmModule.forFeature([Contact]),
   ],
   providers: [ReportService, TasksService, ContactsService],
-  controllers: [ReportController]
+  controllers: [ReportController],
 })
 export class ReportModule {}

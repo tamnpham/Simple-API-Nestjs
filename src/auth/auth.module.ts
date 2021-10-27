@@ -11,17 +11,22 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
 import { Token } from './token.entity';
 
-@Module // <== decorator
-({
-  imports: [
-    TypeOrmModule.forFeature([Token]),
-    UsersModule,
-    PassportModule,
-    JwtModule.register({secret: jwtConstants.secret, signOptions: { expiresIn: '1 hour' }}),
-    MailModule,
-  ],
-  exports: [AuthService],
-  controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy]
-})
+@Module(
+  // <== decorator
+  {
+    imports: [
+      TypeOrmModule.forFeature([Token]),
+      UsersModule,
+      PassportModule,
+      JwtModule.register({
+        secret: jwtConstants.secret,
+        signOptions: { expiresIn: '1 hour' },
+      }),
+      MailModule,
+    ],
+    exports: [AuthService],
+    controllers: [AuthController],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
+  },
+)
 export class AuthModule {}

@@ -22,7 +22,7 @@ import { Dashboard } from './dashboard.entity';
 import { DashboardService } from './dashboard.service';
 import SaveDashboardRequest from './dto/SaveDashboardRequest.dto';
 
-// @UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('dashboard-api') //this decorator to tag controller with specific tags in swagger
 @Controller('dashboards')
 export class DashboardController {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WidgetService } from 'src/widget/widget.service';
-import { Entity, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Dashboard } from './dashboard.entity';
 import { CsvParser } from 'nest-csv-parser';
 import { createReadStream } from 'fs';

@@ -6,50 +6,47 @@ import SaveContactRequest from './dto/SaveContactRequest.dto';
 
 @Injectable()
 export class ContactsService {
-    constructor(
-        @InjectRepository(Contact)
-        private readonly contactsRepository: Repository<Contact>,
-    ){}
-    
-    //function(parameter): return value
-    create(saveContactRequest: SaveContactRequest): Promise<SaveContactRequest> {
-        const contactObject = new Contact();
-        contactObject.id = saveContactRequest.id;
-        contactObject.firstname = saveContactRequest.firstname;
-        contactObject.lastname = saveContactRequest.lastname;
-        contactObject.title = saveContactRequest.title;
-        contactObject.department = saveContactRequest.department;
-        contactObject.project = saveContactRequest.project;
-        contactObject.avatar = saveContactRequest.avatar;
-        contactObject.employeeId = saveContactRequest.employeeId
+  constructor(
+    @InjectRepository(Contact)
+    private readonly contactsRepository: Repository<Contact>,
+  ) {}
 
-        return this.contactsRepository.save(contactObject);
-    }
+  //function(parameter): return value
+  create(saveContactRequest: SaveContactRequest): Promise<SaveContactRequest> {
+    const contactObject = new Contact();
+    contactObject.id = saveContactRequest.id;
+    contactObject.firstname = saveContactRequest.firstname;
+    contactObject.lastname = saveContactRequest.lastname;
+    contactObject.title = saveContactRequest.title;
+    contactObject.department = saveContactRequest.department;
+    contactObject.project = saveContactRequest.project;
+    contactObject.avatar = saveContactRequest.avatar;
+    contactObject.employeeId = saveContactRequest.employeeId;
 
-    async retrieveAll(): Promise<Contact[]> {
-        return this.contactsRepository.find();
-    }
+    return this.contactsRepository.save(contactObject);
+  }
 
-    retrieveOne(id: string): Promise<Contact> {
-        return this.contactsRepository.findOne(id);
-    }
+  async retrieveAll(): Promise<Contact[]> {
+    return this.contactsRepository.find();
+  }
 
-    async delete(id: string): Promise<void> {
-        await this.contactsRepository.delete(id);
-    }
+  retrieveOne(id: string): Promise<Contact> {
+    return this.contactsRepository.findOne(id);
+  }
 
-    async update(id: string, contactInfoUpdate: Contact): Promise<any> {
-        await this.contactsRepository.update(
-            contactInfoUpdate.id,
-            {
-                firstname: contactInfoUpdate.firstname,
-                lastname: contactInfoUpdate.lastname,
-                title: contactInfoUpdate.title,
-                department: contactInfoUpdate.department,
-                project: contactInfoUpdate.project,
-                avatar: contactInfoUpdate.avatar,
-                employeeId: contactInfoUpdate.employeeId
-            }
-        );
-    }
+  async delete(id: string): Promise<void> {
+    await this.contactsRepository.delete(id);
+  }
+
+  async update(id: string, contactInfoUpdate: Contact): Promise<any> {
+    await this.contactsRepository.update(contactInfoUpdate.id, {
+      firstname: contactInfoUpdate.firstname,
+      lastname: contactInfoUpdate.lastname,
+      title: contactInfoUpdate.title,
+      department: contactInfoUpdate.department,
+      project: contactInfoUpdate.project,
+      avatar: contactInfoUpdate.avatar,
+      employeeId: contactInfoUpdate.employeeId,
+    });
+  }
 }

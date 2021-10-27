@@ -8,49 +8,47 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ReportService {
-    constructor(
-        private tasksService: TasksService,
-        @InjectRepository(Task)
-        private readonly tasksRepository: Repository<Task>,
+  constructor(
+    private tasksService: TasksService,
+    @InjectRepository(Task)
+    private readonly tasksRepository: Repository<Task>,
 
-        private contactsService: ContactsService,
-        @InjectRepository(Contact)
-        private readonly contactsRepository: Repository<Contact>,
-    ){}
+    private contactsService: ContactsService,
+    @InjectRepository(Contact)
+    private readonly contactsRepository: Repository<Contact>,
+  ) {}
 
-    async getReportTasks(): Promise<any> {
-        
-        const listRecordTasks = await this.tasksService.retrieveAll();
-        let countIsCompleted = 0
-        for (let entry of listRecordTasks) {
-            if (entry.isCompleted == true){
-                countIsCompleted += 1;
-            }
-        }
-
-        const report = {
-            Completed: countIsCompleted,
-            NotCompleted: listRecordTasks.length - countIsCompleted
-        }
-
-        return report
+  async getReportTasks(): Promise<any> {
+    const listRecordTasks = await this.tasksService.retrieveAll();
+    let countIsCompleted = 0;
+    for (const entry of listRecordTasks) {
+      if (entry.isCompleted == true) {
+        countIsCompleted += 1;
+      }
     }
 
-    async getReportContacts(): Promise<any> {
-        
-        const listRecordContacts = await this.contactsService.retrieveAll();
-        const arrayTitle = []
+    const report = {
+      Completed: countIsCompleted,
+      NotCompleted: listRecordTasks.length - countIsCompleted,
+    };
 
-        for (let entry of listRecordContacts) {
-            arrayTitle.push(entry.title)
-        }
-        // console.log(arrayTitle)
+    return report;
+  }
 
-        const report = {};
-        for (let title of arrayTitle){
-            report[title] = report[title] ? report[title] + 1 : 1;
-        }
+  async getReportContacts(): Promise<any> {
+    const listRecordContacts = await this.contactsService.retrieveAll();
+    const arrayTitle = [];
 
-        return report
+    for (const entry of listRecordContacts) {
+      arrayTitle.push(entry.title);
     }
+    // console.log(arrayTitle)
+
+    const report = {};
+    for (const title of arrayTitle) {
+      report[title] = report[title] ? report[title] + 1 : 1;
+    }
+
+    return report;
+  }
 }
